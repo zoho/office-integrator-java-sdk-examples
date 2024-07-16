@@ -118,7 +118,7 @@ Java SDK is included in this project through Maven distribution. You can include
 - Clone this project using following command.
 
    ```sh
-   git clone https://github.com/iampraba/zoi-java-sdk-examples.git
+   git clone https://github.com/zoho/zoi-java-sdk-examples.git
    ```
 
 - Open above cloned project in your IDE, download dependencies mentioned in maven pom.xml and run the sample java code
