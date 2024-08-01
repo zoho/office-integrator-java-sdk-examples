@@ -1,0 +1,57 @@
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and databases #
+######################
+*.log
+*.sqlite
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.swp
+*.swo
+*.orig
+
+# IDE related files #
+######################
+.classpath
+.project
+.settings
+settings.json
+.idea
+.metadata
+*.iml
+*.ipr
+/.zide_resources/
+/bin/
+/target/
+/.antsetup/
+/.zide/
+**/sdk_tokens.txt
+**/java-sdk/target

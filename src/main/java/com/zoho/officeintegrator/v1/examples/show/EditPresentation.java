@@ -7,7 +7,7 @@ import java.util.logging.Level;
 import com.zoho.api.authenticator.Auth;
 import com.zoho.api.authenticator.Token;
 import com.zoho.officeintegrator.Initializer;
-import com.zoho.officeintegrator.dc.USDataCenter;
+import com.zoho.officeintegrator.dc.DataCenter;
 import com.zoho.officeintegrator.logger.Logger;
 import com.zoho.officeintegrator.logger.Logger.Levels;
 import com.zoho.officeintegrator.util.APIResponse;
@@ -76,7 +76,7 @@ public class EditPresentation {
 			tokens.add(auth);
 			
 			new Initializer.Builder()
-				.environment(new USDataCenter.Production())
+				.environment(new DataCenter.Production("https://api.office-integrator.com"))
 				.tokens(tokens)
 				.logger(logger)
 				.initialize();

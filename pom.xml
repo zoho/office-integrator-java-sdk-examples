@@ -23,8 +23,8 @@
 
         <dependency>
             <groupId>com.zoho.officeintegrator</groupId>
-            <artifactId>zoi-java-sdk</artifactId>
-            <version>1.0.2</version>
+            <artifactId>office-integrator-sdk</artifactId>
+            <version>1.0.0</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
