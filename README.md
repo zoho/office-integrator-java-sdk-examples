@@ -26,15 +26,15 @@ Java SDK is included in this project through Maven distribution. You can include
         ```xml
         <repositories>
             <repository>
-                <id>zoi-java-sdk</id>
+                <id>office-integrator-sdk</id>
                 <url>https://maven.zohodl.com</url>
             </repository>
         </repositories>
         <dependencies>
             <dependency>
                 <groupId>com.zoho.officeintegrator</groupId>
-                <artifactId>zoi-java-sdk</artifactId>
-                <version>1.0.2</version>
+                <artifactId>office-integrator-sdk</artifactId>
+                <version>1.0.0</version>
             </dependency>
         </dependencies>
         ```
@@ -48,13 +48,13 @@ Java SDK is included in this project through Maven distribution. You can include
             maven { url "https://maven.zohodl.com" }
         }
         dependencies{
-            implementation 'com.zoho.officeintegrator:zoi-java-sdk:1.0.2'
+            implementation 'com.zoho.officeintegrator:office-integrator-sdk:1.0.0'
         }
         ```
 
 3. **Download and Bundle SDK Jar in your project**
    
-   * [zoi-java-sdk-1.0.2.jar](https://maven.zohodl.com/com/zoho/officeintegrator/zoi-java-sdk/1.0.2/zoi-java-sdk-1.0.2.jar) - Please download this jar and include along with the following dependency jars in your project to run Office Integrator java sdk on your application.
+   * [office-integrator-sdk-1.0.0.jar](https://maven.zohodl.com/com/zoho/officeintegrator/office-integrator-sdk/1.0.0/office-integrator-sdk-1.0.0.jar) - Please download this jar and include along with the following dependency jars in your project to run Office Integrator java sdk on your application.
 
         ### -  Dependency JARs
 
@@ -89,12 +89,12 @@ Java SDK is included in this project through Maven distribution. You can include
 ### To run from Mac Terminal
    - Clone this project using following command.
    ```sh
-   git clone https://github.com/iampraba/zoi-java-sdk-examples.git
+   git clone https://github.com/zoho/office-integrator-java-sdk-examples.git
    ```
    - Go to project folder
 
    ```sh
-   cd zoi-java-sdk-example
+   cd office-integrator-java-sdk-examples
    ```
    - Run following following command to download dependencies and complete the sample code
 
@@ -118,7 +118,7 @@ Java SDK is included in this project through Maven distribution. You can include
 - Clone this project using following command.
 
    ```sh
-   git clone https://github.com/zoho/zoi-java-sdk-examples.git
+   git clone https://github.com/zoho/office-integrator-java-sdk-examples.git
    ```
 
 - Open above cloned project in your IDE, download dependencies mentioned in maven pom.xml and run the sample java code
