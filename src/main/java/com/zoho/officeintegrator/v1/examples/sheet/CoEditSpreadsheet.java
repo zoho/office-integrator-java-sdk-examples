@@ -15,8 +15,10 @@ import com.zoho.officeintegrator.util.APIResponse;
 import com.zoho.officeintegrator.v1.Authentication;
 import com.zoho.officeintegrator.v1.CreateSheetParameters;
 import com.zoho.officeintegrator.v1.CreateSheetResponse;
+import com.zoho.officeintegrator.v1.DocumentInfo;
 import com.zoho.officeintegrator.v1.InvalidConfigurationException;
 import com.zoho.officeintegrator.v1.SheetResponseHandler;
+import com.zoho.officeintegrator.v1.SheetUserSettings;
 import com.zoho.officeintegrator.v1.V1Operations;
 
 public class CoEditSpreadsheet {
@@ -33,25 +35,69 @@ public class CoEditSpreadsheet {
 			V1Operations sdkOperations = new V1Operations();
 			CreateSheetParameters createSpreadsheetParams = new CreateSheetParameters();
 
+			DocumentInfo documentInfo = new DocumentInfo();
+
+			documentInfo.setDocumentName("Untilted Spreadsheet");
+			//System time value used to generate unique document everytime. You can replace based on your application.
+			documentInfo.setDocumentId("" + System.currentTimeMillis());
+			
+			createSpreadsheetParams.setDocumentInfo(documentInfo);
+			
+			SheetUserSettings user1Info = new SheetUserSettings();
+			
+			user1Info.setDisplayName("User 1");
+			
+			createSpreadsheetParams.setUserInfo(user1Info);
+
 			APIResponse<SheetResponseHandler> response = sdkOperations.createSheet(createSpreadsheetParams);
+
 			int responseStatusCode = response.getStatusCode();
 			
 			if ( responseStatusCode >= 200 && responseStatusCode <= 299 ) {
 				CreateSheetResponse sheetResponse = (CreateSheetResponse) response.getObject();
 				
 				LOGGER.log(Level.INFO, "Sheet document id - {0}", new Object[] { sheetResponse.getDocumentId() }); //No I18N
-				LOGGER.log(Level.INFO, "Sheet document session id - {0}", new Object[] { sheetResponse.getSessionId() }); //No I18N
-				LOGGER.log(Level.INFO, "Sheet document session url - {0}", new Object[] { sheetResponse.getDocumentUrl() }); //No I18N
+				LOGGER.log(Level.INFO, "Sheet document session 1 id - {0}", new Object[] { sheetResponse.getSessionId() }); //No I18N
+				LOGGER.log(Level.INFO, "Sheet document session 1 url - {0}", new Object[] { sheetResponse.getDocumentUrl() }); //No I18N
+				
+				SheetUserSettings user2Info = new SheetUserSettings();
+				
+				user2Info.setDisplayName("User 2");
+				
+				createSpreadsheetParams.setUserInfo(user2Info);
+				
+				//Creating new session for same document to test the collaboration demo
+				response = sdkOperations.createSheet(createSpreadsheetParams);
+
+				responseStatusCode = response.getStatusCode();
+				
+				if ( responseStatusCode >= 200 && responseStatusCode <= 299 ) {
+					sheetResponse = (CreateSheetResponse) response.getObject();
+					
+					LOGGER.log(Level.INFO, "Sheet document id - {0}", new Object[] { sheetResponse.getDocumentId() }); //No I18N
+					LOGGER.log(Level.INFO, "Sheet document session 2 id - {0}", new Object[] { sheetResponse.getSessionId() }); //No I18N
+					LOGGER.log(Level.INFO, "Sheet document session 2 url - {0}", new Object[] { sheetResponse.getDocumentUrl() }); //No I18N
+				} else {
+					InvalidConfigurationException invalidConfiguration = (InvalidConfigurationException) response.getObject();
+
+					String errorMessage = invalidConfiguration.getMessage();
+					
+					Integer errorCode = invalidConfiguration.getCode();
+					String errorKeyName = invalidConfiguration.getKeyName();
+					String errorParameterName = invalidConfiguration.getParameterName();
+					
+					LOGGER.log(Level.INFO, "Sheet configuration error - {0} error code - {1} key - {2} param name - {3}", new Object[] { errorMessage, errorCode, errorKeyName, errorParameterName }); //No I18N
+				}
 			} else {
 				InvalidConfigurationException invalidConfiguration = (InvalidConfigurationException) response.getObject();
 
 				String errorMessage = invalidConfiguration.getMessage();
 				
-				/*Long errorCode = invalidConfiguration.getCode();
+				Integer errorCode = invalidConfiguration.getCode();
 				String errorKeyName = invalidConfiguration.getKeyName();
-				String errorParameterName = invalidConfiguration.getParameterName();*/
+				String errorParameterName = invalidConfiguration.getParameterName();
 				
-				LOGGER.log(Level.INFO, "Sheet configuration error - {0}", new Object[] { errorMessage }); //No I18N
+				LOGGER.log(Level.INFO, "Sheet configuration error - {0} error code - {1} key - {2} param name - {3}", new Object[] { errorMessage, errorCode, errorKeyName, errorParameterName }); //No I18N
 			}
 		} catch (Exception e) {
 			LOGGER.log(Level.WARNING, "Exception in creating sheet session url - ", e); //No I18N

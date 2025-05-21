@@ -72,13 +72,14 @@ public class ConvertSpreadsheet {
 				LOGGER.log(Level.INFO, "Converted sheet saved in output file path - {0}", new Object[] { outputFilePath }); //No I18N
 			} else {
 				InvalidConfigurationException invalidConfiguration = (InvalidConfigurationException) response.getObject();
+
 				String errorMessage = invalidConfiguration.getMessage();
 				
-				/*Long errorCode = invalidConfiguration.getCode();
+				Integer errorCode = invalidConfiguration.getCode();
 				String errorKeyName = invalidConfiguration.getKeyName();
-				String errorParameterName = invalidConfiguration.getParameterName();*/
+				String errorParameterName = invalidConfiguration.getParameterName();
 				
-				LOGGER.log(Level.INFO, "Document configuration error - {0}", new Object[] { errorMessage }); //No I18N
+				LOGGER.log(Level.INFO, "Sheet conversion API configuration error - {0} error code - {1} key - {2} param name - {3}", new Object[] { errorMessage, errorCode, errorKeyName, errorParameterName }); //No I18N
 			}
 			
 		} catch (Exception e) {

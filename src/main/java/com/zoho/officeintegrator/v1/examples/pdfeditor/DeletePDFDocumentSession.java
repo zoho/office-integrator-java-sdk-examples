@@ -1,4 +1,4 @@
-package com.zoho.officeintegrator.v1.examples.sheet;
+package com.zoho.officeintegrator.v1.examples.pdfeditor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,16 +13,16 @@ import com.zoho.officeintegrator.logger.Logger;
 import com.zoho.officeintegrator.logger.Logger.Levels;
 import com.zoho.officeintegrator.util.APIResponse;
 import com.zoho.officeintegrator.v1.Authentication;
-import com.zoho.officeintegrator.v1.CreateSheetParameters;
-import com.zoho.officeintegrator.v1.CreateSheetResponse;
+import com.zoho.officeintegrator.v1.CreateDocumentResponse;
+import com.zoho.officeintegrator.v1.DocumentSessionDeleteSuccessResponse;
+import com.zoho.officeintegrator.v1.EditPdfParameters;
 import com.zoho.officeintegrator.v1.InvalidConfigurationException;
-import com.zoho.officeintegrator.v1.SessionDeleteSuccessResponse;
-import com.zoho.officeintegrator.v1.SheetResponseHandler;
+import com.zoho.officeintegrator.v1.PdfEditorResponseHandler;
 import com.zoho.officeintegrator.v1.V1Operations;
 
-public class DeleteSpreadsheetSession {
+public class DeletePDFDocumentSession {
 
-	private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(DeleteSpreadsheetSession.class.getName());
+	private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(DeletePDFDocumentSession.class.getName());
 
 	public static void main(String args[]) {
 		
@@ -30,39 +30,39 @@ public class DeleteSpreadsheetSession {
 			//SDK Initialisation code starts. Move this code to common place and initialise once
 
 			initializeSdk();
-			
+
 			V1Operations sdkOperations = new V1Operations();
-			CreateSheetParameters createSpreadsheetParams = new CreateSheetParameters();
+			EditPdfParameters editPDFParams = new EditPdfParameters();
+
+			editPDFParams.setUrl("https://demo.office-integrator.com/zdocs/EventForm.pdf");
 			
-			APIResponse<SheetResponseHandler> response = sdkOperations.createSheet(createSpreadsheetParams);
+			APIResponse<PdfEditorResponseHandler> response = sdkOperations.editPdf(editPDFParams);
+
 			int responseStatusCode = response.getStatusCode();
 			
 			if ( responseStatusCode >= 200 && responseStatusCode <= 299 ) {
-				CreateSheetResponse showResponse = (CreateSheetResponse) response.getObject();
-				String sessionId = showResponse.getSessionId();
+				CreateDocumentResponse responseObj = (CreateDocumentResponse) response.getObject();
 
-				LOGGER.log(Level.INFO, "Sheet document id - {0}", new Object[] { showResponse.getDocumentId() }); //No I18N
-				LOGGER.log(Level.INFO, "Sheet session id - {0}", new Object[] { showResponse.getSessionId() }); //No I18N
-				LOGGER.log(Level.INFO, "Sheet session url - {0}", new Object[] { showResponse.getDocumentUrl() }); //No I18N
-
-				response = sdkOperations.deleteSheetSession(sessionId);
+				String sessionId = responseObj.getSessionId();
 				
-				LOGGER.log(Level.INFO, "Get sheet details request status - {0}", new Object[] { response.getStatusCode() }); //No I18N
+				LOGGER.log(Level.INFO, "Session ID - {0} created to demontrate the pdf document session delete api.", new Object[] { sessionId }); //No I18N
+				
+				response = sdkOperations.deletePdfDocumentSession(sessionId);
 				
 				if ( responseStatusCode >= 200 && responseStatusCode <= 299 ) {
-					SessionDeleteSuccessResponse deleteResponse = (SessionDeleteSuccessResponse) response.getObject();
-
-					LOGGER.log(Level.INFO, "Sheet delete status- {0}", new Object[] { deleteResponse.getSessionDelete() }); //No I18N
+					DocumentSessionDeleteSuccessResponse deleteResponseObj = (DocumentSessionDeleteSuccessResponse) response.getObject();
+					
+					LOGGER.log(Level.INFO, "Session delete status - {0}", new Object[] { deleteResponseObj.getSessionDeleted() }); //No I18N
 				} else {
 					InvalidConfigurationException invalidConfiguration = (InvalidConfigurationException) response.getObject();
 
 					String errorMessage = invalidConfiguration.getMessage();
 					
-					/*Long errorCode = invalidConfiguration.getCode();
+					Integer errorCode = invalidConfiguration.getCode();
 					String errorKeyName = invalidConfiguration.getKeyName();
-					String errorParameterName = invalidConfiguration.getParameterName();*/
+					String errorParameterName = invalidConfiguration.getParameterName();
 					
-					LOGGER.log(Level.INFO, "Sheet configuration error - {0}", new Object[] { errorMessage }); //No I18N
+					LOGGER.log(Level.INFO, "PDF Editor Session Delete API configuration error - {0} error code - {1} key - {2} param name - {3}", new Object[] { errorMessage, errorCode, errorKeyName, errorParameterName }); //No I18N
 				}
 				
 			} else {
@@ -70,15 +70,15 @@ public class DeleteSpreadsheetSession {
 
 				String errorMessage = invalidConfiguration.getMessage();
 				
-				Integer errorCode = invalidConfiguration.getCode();
+				/*Long errorCode = invalidConfiguration.getCode();
 				String errorKeyName = invalidConfiguration.getKeyName();
-				String errorParameterName = invalidConfiguration.getParameterName();
+				String errorParameterName = invalidConfiguration.getParameterName();*/
 				
-				LOGGER.log(Level.INFO, "Sheet configuration error - {0} error code - {1} key - {2} param name - {3}", new Object[] { errorMessage, errorCode, errorKeyName, errorParameterName }); //No I18N
+				LOGGER.log(Level.INFO, "Document configuration error - {0}", new Object[] { errorMessage }); //No I18N
 			}
 			
 		} catch (Exception e) {
-			LOGGER.log(Level.WARNING, "Exception in creating presentation session url - ", e); //No I18N
+			LOGGER.log(Level.INFO, "Exception in deleting document session url - ", e); //No I18N
 		}
 	}
 	
@@ -112,7 +112,7 @@ public class DeleteSpreadsheetSession {
 			
 			status = true;
 		} catch (Exception e) {
-			LOGGER.log(Level.INFO, "Exception in creating document session url - ", e); //No I18N
+			LOGGER.log(Level.INFO, "Exception in deleting document session url - ", e); //No I18N
 		}
 		return status;
 	}

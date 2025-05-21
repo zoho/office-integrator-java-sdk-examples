@@ -110,6 +110,11 @@ public class CreateDocument {
 			saveUrlParams.put("id", 123456789);
 			saveUrlParams.put("auth_token", "oswedf32rk");
 			
+			Map<String, Object> saveUrlHeaders = new HashMap<String, Object>();
+			
+			saveUrlHeaders.put("id", 123456789);
+			saveUrlHeaders.put("auth_token", "oswedf32rk");
+			
 			
 			CallbackSettings callbackSettings = new CallbackSettings();
 			
@@ -118,6 +123,7 @@ public class CreateDocument {
 			callbackSettings.setSaveFormat("docx");
 			callbackSettings.setHttpMethodType("post");
 			callbackSettings.setSaveUrlParams(saveUrlParams);
+			callbackSettings.setSaveUrlHeaders(saveUrlHeaders);
 			callbackSettings.setSaveUrl("https://officeintegrator.zoho.com/v1/api/webhook/savecallback/601e12157123434d4e6e00cc3da2406df2b9a1d84a903c6cfccf92c8286");
 			
 			createDocumentParams.setCallbackSettings(callbackSettings);
@@ -133,13 +139,14 @@ public class CreateDocument {
 				LOGGER.log(Level.INFO, "Document session url - {0}", new Object[] { documentResponse.getDocumentUrl() }); //No I18N
 			} else {
 				InvalidConfigurationException invalidConfiguration = (InvalidConfigurationException) response.getObject();
+
 				String errorMessage = invalidConfiguration.getMessage();
 				
-				/*Long errorCode = invalidConfiguration.getCode();
+				Integer errorCode = invalidConfiguration.getCode();
 				String errorKeyName = invalidConfiguration.getKeyName();
-				String errorParameterName = invalidConfiguration.getParameterName();*/
+				String errorParameterName = invalidConfiguration.getParameterName();
 				
-				LOGGER.log(Level.INFO, "Document configuration error - {0}", new Object[] { errorMessage }); //No I18N
+				LOGGER.log(Level.INFO, "Document Session Creation API configuration error - {0} error code - {1} key - {2} param name - {3}", new Object[] { errorMessage, errorCode, errorKeyName, errorParameterName }); //No I18N
 			}
 			
 		} catch (Exception e) {
