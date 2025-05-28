@@ -13,7 +13,7 @@ This code repository showcases examples that illustrate the utilization of the J
 
 ## Environmental Setup
 
-JAVA SDK requires Java (version 8 and above) to be set up in your development environment.
+JAVA SDK requires Java (version 11 and above) to be set up in your development environment.
 
 ## Including the SDK in your project
 
