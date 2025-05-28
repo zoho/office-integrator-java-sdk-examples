@@ -24,7 +24,7 @@
         <dependency>
             <groupId>com.zoho.officeintegrator</groupId>
             <artifactId>office-integrator-sdk</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
