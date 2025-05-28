@@ -1,4 +1,5 @@
-package com.zoho.officeintegrator.v1.examples.show;
+//$Id$
+package com.zoho.officeintegrator.v1.examples.pdfeditor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,17 +18,19 @@ import com.zoho.officeintegrator.util.APIResponse;
 import com.zoho.officeintegrator.v1.Authentication;
 import com.zoho.officeintegrator.v1.CallbackSettings;
 import com.zoho.officeintegrator.v1.CreateDocumentResponse;
-import com.zoho.officeintegrator.v1.CreatePresentationParameters;
 import com.zoho.officeintegrator.v1.DocumentInfo;
+import com.zoho.officeintegrator.v1.EditPdfParameters;
 import com.zoho.officeintegrator.v1.InvalidConfigurationException;
-import com.zoho.officeintegrator.v1.ShowResponseHandler;
+import com.zoho.officeintegrator.v1.PdfEditorResponseHandler;
+import com.zoho.officeintegrator.v1.PdfEditorSettings;
+import com.zoho.officeintegrator.v1.PdfEditorUiOptions;
 import com.zoho.officeintegrator.v1.UserInfo;
 import com.zoho.officeintegrator.v1.V1Operations;
-import com.zoho.officeintegrator.v1.ZohoShowEditorSettings;
+import com.zoho.officeintegrator.v1.examples.sheet.CoEditSpreadsheet;
 
-public class CreatePresentation {
+public class EditPDFDocument {
 
-	private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(CreatePresentation.class.getName());
+	private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(CoEditSpreadsheet.class.getName());
 
 	public static void main(String args[]) {
 		
@@ -35,71 +38,63 @@ public class CreatePresentation {
 			//SDK Initialisation code starts. Move this code to common place and initialise once
 
 			initializeSdk();
-			
+
 			V1Operations sdkOperations = new V1Operations();
-			CreatePresentationParameters createPresentationParams = new CreatePresentationParameters();
+			EditPdfParameters editPDFParams = new EditPdfParameters();
+
+			editPDFParams.setUrl("https://demo.office-integrator.com/zdocs/EventForm.pdf");
 			
 			DocumentInfo documentInfo = new DocumentInfo();
-			
-			documentInfo.setDocumentName("Untilted Spreadsheet");
-			//System time value used to generate unique document everytime. You can replace based on your application.
+
+			documentInfo.setDocumentName("EventForm.pdf");
 			documentInfo.setDocumentId("" + System.currentTimeMillis());
+
+			editPDFParams.setDocumentInfo(documentInfo);
 			
-			createPresentationParams.setDocumentInfo(documentInfo);
+			PdfEditorSettings editorSettings = new PdfEditorSettings();
+			
+			editorSettings.setUnit("in");
+			editorSettings.setLanguage("en");
+
+			editPDFParams.setEditorSettings(editorSettings);
 			
 			UserInfo userInfo = new UserInfo();
 			
-			userInfo.setUserId("100");
-			userInfo.setDisplayName("John");
-			
-			createPresentationParams.setUserInfo(userInfo);
+			userInfo.setUserId("" + System.currentTimeMillis());
+			userInfo.setDisplayName("User 1");
 
-			ZohoShowEditorSettings showEditorSettings = new ZohoShowEditorSettings();
+			editPDFParams.setUserInfo(userInfo);
 			
-			showEditorSettings.setLanguage("en");
-
-			createPresentationParams.setEditorSettings(showEditorSettings);
+			PdfEditorUiOptions uiOptions = new PdfEditorUiOptions();
 			
-			Map<String, Object> permissions = new HashMap<String, Object>();
+			uiOptions.setFileMenu("show");
+			uiOptions.setSaveButton("show");
 			
-            permissions.put("document.edit", true);
-            permissions.put("document.export", true);
-			permissions.put("document.print", false);
-            
-			createPresentationParams.setPermissions(permissions);
-			
-			Map<String, Object> saveUrlParams = new HashMap<String, Object>();
-			
-			saveUrlParams.put("id", 123456789);
-			saveUrlParams.put("auth_token", "oswedf32rk");
-			
-			Map<String, Object> saveUrlHeaders = new HashMap<String, Object>();
-			
-			saveUrlHeaders.put("id", 123456789);
-			saveUrlHeaders.put("auth_token", "oswedf32rk");
+			//editPDFParams.setUiOptions(uiOptions);
 			
 			CallbackSettings callbackSettings = new CallbackSettings();
-
+			Map<String, Object> saveUrlHeaders = new HashMap<>();
+			Map<String, Object> saveUrlParams = new HashMap<>();
+			
 			callbackSettings.setRetries(2);
-			callbackSettings.setTimeout(10000);
-			callbackSettings.setSaveFormat("pptx");
+			callbackSettings.setTimeout(100000);
+			callbackSettings.setSaveFormat("pdf");
 			callbackSettings.setHttpMethodType("post");
 			callbackSettings.setSaveUrlParams(saveUrlParams);
 			callbackSettings.setSaveUrlHeaders(saveUrlHeaders);
-			callbackSettings.setSaveUrl("https://officeintegrator.zoho.com/v1/api/webhook/savecallback/601e12157123434d4e6e00cc3da2406df2b9a1d84a903c6cfccf92c8286");
-
-			createPresentationParams.setCallbackSettings(callbackSettings);
-
-			APIResponse<ShowResponseHandler> response = sdkOperations.createPresentation(createPresentationParams);
+			callbackSettings.setSaveUrl("https://officeintegrator.zoho.com/v1/api/webhook/savecallback/601e12157a25e63fc4dfd4e6e00cc3da3f9242bb2916325bcb00576beed123bb");
+			
+			editPDFParams.setCallbackSettings(callbackSettings);
+			
+			APIResponse<PdfEditorResponseHandler> response = sdkOperations.editPdf(editPDFParams);
 			int responseStatusCode = response.getStatusCode();
 			
 			if ( responseStatusCode >= 200 && responseStatusCode <= 299 ) {
-				CreateDocumentResponse showResponse = (CreateDocumentResponse) response.getObject();
-
-				LOGGER.log(Level.INFO, "Presentation document id - {0}", new Object[] { showResponse.getDocumentId() }); //No I18N
-				LOGGER.log(Level.INFO, "Presentation session id - {0}", new Object[] { showResponse.getSessionId() }); //No I18N
-				LOGGER.log(Level.INFO, "Presentation session url - {0}", new Object[] { showResponse.getDocumentUrl() }); //No I18N
-
+				CreateDocumentResponse pdfSessionResponse = (CreateDocumentResponse) response.getObject();
+				
+				LOGGER.log(Level.INFO, "PDF document id - {0}", new Object[] { pdfSessionResponse.getDocumentId() }); //No I18N
+				LOGGER.log(Level.INFO, "PDF document session id - {0}", new Object[] { pdfSessionResponse.getSessionId() }); //No I18N
+				LOGGER.log(Level.INFO, "PDF document session url - {0}", new Object[] { pdfSessionResponse.getDocumentUrl() }); //No I18N
 			} else {
 				InvalidConfigurationException invalidConfiguration = (InvalidConfigurationException) response.getObject();
 
@@ -109,11 +104,10 @@ public class CreatePresentation {
 				String errorKeyName = invalidConfiguration.getKeyName();
 				String errorParameterName = invalidConfiguration.getParameterName();
 				
-				LOGGER.log(Level.INFO, "configuration error - {0} error code - {1} key - {2} param name - {3}", new Object[] { errorMessage, errorCode, errorKeyName, errorParameterName }); //No I18N
+				LOGGER.log(Level.INFO, "PDF Editor configuration error - {0} error code - {1} key - {2} param name - {3}", new Object[] { errorMessage, errorCode, errorKeyName, errorParameterName }); //No I18N
 			}
-			
 		} catch (Exception e) {
-			LOGGER.log(Level.WARNING, "Exception in creating presentation session url - ", e); //No I18N
+			LOGGER.log(Level.WARNING, "Exception in creating pdf session url - ", e); //No I18N
 		}
 	}
 	
@@ -122,7 +116,7 @@ public class CreatePresentation {
 		boolean status = false;
 
 		try {
-			
+
 			//Sdk application log configuration
 			Logger logger = new Logger.Builder()
 			        .level(Levels.INFO)
@@ -147,7 +141,7 @@ public class CreatePresentation {
 			
 			status = true;
 		} catch (Exception e) {
-			LOGGER.log(Level.INFO, "Exception in creating document session url - ", e); //No I18N
+			LOGGER.log(Level.INFO, "Exception in creating pdf document session url - ", e); //No I18N
 		}
 		return status;
 	}

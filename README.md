@@ -34,7 +34,7 @@ Java SDK is included in this project through Maven distribution. You can include
             <dependency>
                 <groupId>com.zoho.officeintegrator</groupId>
                 <artifactId>office-integrator-sdk</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1</version>
             </dependency>
         </dependencies>
         ```
@@ -48,13 +48,13 @@ Java SDK is included in this project through Maven distribution. You can include
             maven { url "https://maven.zohodl.com" }
         }
         dependencies{
-            implementation 'com.zoho.officeintegrator:office-integrator-sdk:1.0.0'
+            implementation 'com.zoho.officeintegrator:office-integrator-sdk:1.0.1'
         }
         ```
 
 3. **Download and Bundle SDK Jar in your project**
    
-   * [office-integrator-sdk-1.0.0.jar](https://maven.zohodl.com/com/zoho/officeintegrator/office-integrator-sdk/1.0.0/office-integrator-sdk-1.0.0.jar) - Please download this jar and include along with the following dependency jars in your project to run Office Integrator java sdk on your application.
+   * [office-integrator-sdk-1.0.1.jar](https://maven.zohodl.com/com/zoho/officeintegrator/office-integrator-sdk/1.0.1/office-integrator-sdk-1.0.1.jar) - Please download this jar and include along with the following dependency jars in your project to run Office Integrator java sdk on your application.
 
         ### -  Dependency JARs
 

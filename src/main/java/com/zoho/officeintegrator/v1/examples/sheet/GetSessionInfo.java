@@ -41,13 +41,13 @@ public class GetSessionInfo {
 				CreateSheetResponse showResponse = (CreateSheetResponse) response.getObject();
 				String sessionid = showResponse.getSessionId();
 
-				LOGGER.log(Level.INFO, "Presentation document id - {0}", new Object[] { showResponse.getDocumentId() }); //No I18N
-				LOGGER.log(Level.INFO, "Presentation session id - {0}", new Object[] { showResponse.getSessionId() }); //No I18N
-				LOGGER.log(Level.INFO, "Presentation session url - {0}", new Object[] { showResponse.getDocumentUrl() }); //No I18N
+				LOGGER.log(Level.INFO, "Sheet document id - {0}", new Object[] { showResponse.getDocumentId() }); //No I18N
+				LOGGER.log(Level.INFO, "Sheet session id - {0}", new Object[] { showResponse.getSessionId() }); //No I18N
+				LOGGER.log(Level.INFO, "Sheet session url - {0}", new Object[] { showResponse.getDocumentUrl() }); //No I18N
 
 				response = sdkOperations.getSheetSession(sessionid);
 				
-				LOGGER.log(Level.INFO, "Get presentation details request status - {0}", new Object[] { response.getStatusCode() }); //No I18N
+				LOGGER.log(Level.INFO, "Get Sheet details request status - {0}", new Object[] { response.getStatusCode() }); //No I18N
 				
 				if ( responseStatusCode >= 200 && responseStatusCode <= 299 ) {
 					SessionMeta sessionMeta = (SessionMeta) response.getObject();
@@ -59,11 +59,11 @@ public class GetSessionInfo {
 
 					String errorMessage = invalidConfiguration.getMessage();
 					
-					/*Long errorCode = invalidConfiguration.getCode();
+					Integer errorCode = invalidConfiguration.getCode();
 					String errorKeyName = invalidConfiguration.getKeyName();
-					String errorParameterName = invalidConfiguration.getParameterName();*/
+					String errorParameterName = invalidConfiguration.getParameterName();
 					
-					LOGGER.log(Level.INFO, "Presentation configuration error - {0}", new Object[] { errorMessage }); //No I18N
+					LOGGER.log(Level.INFO, "configuration error - {0} error code - {1} key - {2} param name - {3}", new Object[] { errorMessage, errorCode, errorKeyName, errorParameterName }); //No I18N
 				}
 				
 			} else {
@@ -71,15 +71,15 @@ public class GetSessionInfo {
 
 				String errorMessage = invalidConfiguration.getMessage();
 				
-				/*Long errorCode = invalidConfiguration.getCode();
+				Integer errorCode = invalidConfiguration.getCode();
 				String errorKeyName = invalidConfiguration.getKeyName();
-				String errorParameterName = invalidConfiguration.getParameterName();*/
+				String errorParameterName = invalidConfiguration.getParameterName();
 				
-				LOGGER.log(Level.INFO, "Presentation configuration error - {0}", new Object[] { errorMessage }); //No I18N
+				LOGGER.log(Level.INFO, "Sheet configuration error - {0} error code - {1} key - {2} param name - {3}", new Object[] { errorMessage, errorCode, errorKeyName, errorParameterName }); //No I18N
 			}
 			
 		} catch (Exception e) {
-			LOGGER.log(Level.WARNING, "Exception in creating presentation session url - ", e); //No I18N
+			LOGGER.log(Level.WARNING, "Exception in creating Sheet session url - ", e); //No I18N
 		}
 	}
 	

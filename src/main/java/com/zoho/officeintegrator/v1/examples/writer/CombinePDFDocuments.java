@@ -20,47 +20,48 @@ import com.zoho.officeintegrator.logger.Logger.Levels;
 import com.zoho.officeintegrator.util.APIResponse;
 import com.zoho.officeintegrator.util.StreamWrapper;
 import com.zoho.officeintegrator.v1.Authentication;
+import com.zoho.officeintegrator.v1.CombinePdfOutputSettings;
+import com.zoho.officeintegrator.v1.CombinePdfParameters;
 import com.zoho.officeintegrator.v1.FileBodyWrapper;
 import com.zoho.officeintegrator.v1.InvalidConfigurationException;
 import com.zoho.officeintegrator.v1.V1Operations;
-import com.zoho.officeintegrator.v1.WatermarkParameters;
-import com.zoho.officeintegrator.v1.WatermarkSettings;
 import com.zoho.officeintegrator.v1.WriterResponseHandler;
 
-public class WatermarkDocument {
+public class CombinePDFDocuments {
 
-	private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(WatermarkDocument.class.getName());
+	private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(CombinePDFDocuments.class.getName());
 
 	public static void main(String args[]) {
 		
 		try {
-			//SDK Initialisation code starts. Move this code to common place and initialise once
-
+			//Initializing SDK once is enough. Calling here since code sample will be tested standalone. 
+	        //You can place SDK initializer code in you application and call once while your application start-up. 
 			initializeSdk();
 
 			V1Operations sdkOperations = new V1Operations();
-			WatermarkParameters waterMarkParams = new WatermarkParameters();
+			CombinePdfParameters combinePdfParameters = new CombinePdfParameters();
 			
-//			waterMarkParams.setUrl("https://demo.office-integrator.com/zdocs/MS_Word_Document_v0.docx");
+			List<StreamWrapper> filesToCombine = new ArrayList<>();
 			
-			String inputFilePath = "/Users/praba-2086/Downloads/MS_Word_Document_v0.docx";
-			StreamWrapper documentStreamWrapper = new StreamWrapper(inputFilePath);
-			
-			waterMarkParams.setDocument(documentStreamWrapper);
-			
-			WatermarkSettings waterMarkSettings = new WatermarkSettings();
+			String input1FilePath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "sample_pdfs" + File.separator + "document1.pdf";
+			StreamWrapper document1StreamWrapper = new StreamWrapper(input1FilePath);
 
-			waterMarkSettings.setType("text");
-			waterMarkSettings.setFontSize(36);
-			waterMarkSettings.setOpacity(70.00);
-			waterMarkSettings.setFontName("Arial");
-			waterMarkSettings.setFontColor("#000000");
-			waterMarkSettings.setOrientation("horizontal");
-			waterMarkSettings.setText("Sample Water Mark Text");
+			filesToCombine.add(document1StreamWrapper);
 			
-			waterMarkParams.setWatermarkSettings(waterMarkSettings);
+			String input2FilePath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "sample_pdfs" + File.separator + "document2.pdf";
+			StreamWrapper document2StreamWrapper = new StreamWrapper(input2FilePath);
 
-			APIResponse<WriterResponseHandler> response = sdkOperations.createWatermarkDocument(waterMarkParams);
+			filesToCombine.add(document2StreamWrapper);
+			
+			combinePdfParameters.setFiles(filesToCombine);
+
+			CombinePdfOutputSettings outputSettings = new CombinePdfOutputSettings();
+
+			outputSettings.setName("output.pdf");
+
+			combinePdfParameters.setOutputSettings(outputSettings);
+
+			APIResponse<WriterResponseHandler> response = sdkOperations.combinePdf(combinePdfParameters);
 			int responseStatusCode = response.getStatusCode();
 			
 			if ( responseStatusCode >= 200 && responseStatusCode <= 299 ) {
@@ -70,7 +71,7 @@ public class WatermarkDocument {
 				OutputStream outputStream = new FileOutputStream(new File(outputFilePath));
 				
 				IOUtils.copy(inputStream, outputStream);
-				LOGGER.log(Level.INFO, "Water marked document saved in output file path - {0}", new Object[] { outputFilePath }); //No I18N
+				LOGGER.log(Level.INFO, "Combined PDF document saved in output file path - {0}", new Object[] { outputFilePath }); //No I18N
 			} else {
 				InvalidConfigurationException invalidConfiguration = (InvalidConfigurationException) response.getObject();
 
@@ -80,15 +81,15 @@ public class WatermarkDocument {
 				String errorKeyName = invalidConfiguration.getKeyName();
 				String errorParameterName = invalidConfiguration.getParameterName();
 				
-				LOGGER.log(Level.INFO, "configuration error - {0} error code - {1} key - {2} param name - {3}", new Object[] { errorMessage, errorCode, errorKeyName, errorParameterName }); //No I18N
+				LOGGER.log(Level.INFO, "Document configuration error - {0} error code - {1} key - {2} param name - {3}", new Object[] { errorMessage, errorCode, errorKeyName, errorParameterName }); //No I18N
 			}
 			
 		} catch (Exception e) {
-			LOGGER.log(Level.INFO, "Exception in creating document session url - ", e); //No I18N
+			LOGGER.log(Level.WARNING, "Exception in creating document session url - ", e); //No I18N
 		}
 	}
-
-	//Initialize SDK on service start up once before making any api call to office integrator sdk.
+	
+		//Initialize SDK on service start up once before making any api call to office integrator sdk.
 	public static boolean initializeSdk() {
 		boolean status = false;
 

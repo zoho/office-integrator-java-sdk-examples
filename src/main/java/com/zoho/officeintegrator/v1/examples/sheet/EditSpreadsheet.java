@@ -33,6 +33,12 @@ public class EditSpreadsheet {
 			V1Operations sdkOperations = new V1Operations();
 			CreateSheetParameters createSpreadsheetParams = new CreateSheetParameters();
 
+			/*
+			String inputFilePath = "Absolute input file path"
+			StreamWrapper documentStreamWrapper = new StreamWrapper(inputFilePath);
+
+			createSpreadsheetParams.setDocument(documentStreamWrapper); */
+
 			createSpreadsheetParams.setUrl("https://demo.office-integrator.com/samples/sheet/Contact_List.xlsx");
 
 			APIResponse<SheetResponseHandler> response = sdkOperations.createSheet(createSpreadsheetParams);
@@ -49,11 +55,11 @@ public class EditSpreadsheet {
 
 				String errorMessage = invalidConfiguration.getMessage();
 				
-				/*Long errorCode = invalidConfiguration.getCode();
+				Integer errorCode = invalidConfiguration.getCode();
 				String errorKeyName = invalidConfiguration.getKeyName();
-				String errorParameterName = invalidConfiguration.getParameterName();*/
+				String errorParameterName = invalidConfiguration.getParameterName();
 				
-				LOGGER.log(Level.INFO, "Sheet configuration error - {0}", new Object[] { errorMessage }); //No I18N
+				LOGGER.log(Level.INFO, "Sheet configuration error - {0} error code - {1} key - {2} param name - {3}", new Object[] { errorMessage, errorCode, errorKeyName, errorParameterName }); //No I18N
 			}
 		} catch (Exception e) {
 			LOGGER.log(Level.WARNING, "Exception in creating sheet session url - ", e); //No I18N
